@@ -13,7 +13,7 @@ const deploy = async()=>{  // The only reason to create the deploy method here i
     const accounts = await web3.eth.getAccounts(); // We may be think here that why we are getting accounts here instead of a single account as we have passed a single mneumonic. It's because even a single mneumonic can generate multiple account. Please research how?
     console.log('Attempting to deploy from account', accounts[0]);
 
-    inbox = await new web3.eth.Contract(JSON.parse(compiledFactory.interface)) // We are receiving JSON as the ABI in interface property we don't want to pass the json to create a contract that's why we are parsing(dividing) the JSON file into javascript object.
+    const result = await new web3.eth.Contract(JSON.parse(compiledFactory.interface)) // We are receiving JSON as the ABI in interface property we don't want to pass the json to create a contract that's why we are parsing(dividing) the JSON file into javascript object.
         .deploy({
             data: compiledFactory.bytecode // In data property we are specifing the bytecode which is the actual raw compiled contract.
         })
@@ -22,8 +22,8 @@ const deploy = async()=>{  // The only reason to create the deploy method here i
             gas: '1000000', // Gas is the maximum about of wei we can send with the request or the minimum. NOT SURE.
         })
 
-        console.log('Contract deployed to: ',inbox.options.address);
-    provider.engine.stop(); // To prevent a hanging development, added this code. Please do research...
+        console.log('Contract deployed to: ',result.options.address);
+        provider.engine.stop(); // To prevent a hanging development, added this code. Please do research...
 
 };
 deploy();
